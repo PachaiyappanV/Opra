@@ -1,6 +1,7 @@
 import Link from "next/link";
 import LandingPageNavBar from "./_components/navbar";
-export default function LandingPage() {
+
+export default async function LandingPage() {
   return (
     <main className="relative min-h-screen overflow-hidden text-white">
       {/* Video Background */}
