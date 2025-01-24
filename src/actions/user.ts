@@ -14,7 +14,13 @@ export const onAuthenticateUser = async () => {
         clerkid: user.id,
       },
       include: {
-        workspace: true,
+        workspace: {
+          where: {
+            User: {
+              clerkid: user.id,
+            },
+          },
+        },
       },
     });
 
