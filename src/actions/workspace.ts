@@ -30,8 +30,32 @@ export const verifyAccessToWorkspace = async (workspaceId: string) => {
         ],
       },
     });
-    return { status: 200, workspace: isUserInWorkspace };
+    return { status: 200, data: { workspace: isUserInWorkspace } };
   } catch (error) {
-    return { status: 404, workspace: null };
+    return { status: 403, data: { workspace: null } };
+  }
+};
+
+export const getWorkspaceFolders = async (workSpaceId: string) => {
+  try {
+    const isFolders = await client.folder.findMany({
+      where: {
+        workSpaceId,
+      },
+      include: {
+        _count: {
+          select: {
+            videos: true,
+          },
+        },
+      },
+    });
+
+    if (isFolders && isFolders.length) {
+      return { status: 200, data: { folders: isFolders } };
+    }
+    return { status: 404, data: [] };
+  } catch (error) {
+    return { status: 500, data: [] };
   }
 };
