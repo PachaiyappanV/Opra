@@ -103,3 +103,48 @@ export const getWorkspaceVideos = async (workSpaceId: string) => {
     return { status: 500 };
   }
 };
+
+export const getWorkspaces = async () => {
+  try {
+    const user = await currentUser();
+    if (!user) {
+      return { status: 401 };
+    }
+
+    const workspaces = await client.user.findUnique({
+      where: {
+        clerkid: user.id,
+      },
+      select: {
+        subscription: {
+          select: {
+            plan: true,
+          },
+        },
+        workspace: {
+          select: {
+            id: true,
+            name: true,
+            type: true,
+          },
+        },
+        members: {
+          select: {
+            WorkSpace: {
+              select: {
+                id: true,
+                name: true,
+                type: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    if (workspaces) {
+      return { status: 200, data: { workspaces } };
+    }
+  } catch (error) {
+    return { status: 500 };
+  }
+};
