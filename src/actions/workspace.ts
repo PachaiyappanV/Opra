@@ -2,7 +2,6 @@
 
 import { client } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
-import { collectSegments } from "next/dist/build/segment-config/app/app-segments";
 export const verifyAccessToWorkspace = async (workSpaceId: string) => {
   try {
     const user = await currentUser();
@@ -143,38 +142,8 @@ export const getWorkspaces = async () => {
       },
     });
     if (workspaces) {
-      return { status: 200, data: { workspaces } };
+      return { status: 200, data: workspaces };
     }
-  } catch (error) {
-    return { status: 500 };
-  }
-};
-
-export const getNotifications = async () => {
-  try {
-    const user = await currentUser();
-    if (!user) {
-      return { status: 401 };
-    }
-
-    const notifications = await client.user.findUnique({
-      where: {
-        clerkid: user.id,
-      },
-      select: {
-        notification: true,
-        _count: {
-          select: {
-            notification: true,
-          },
-        },
-      },
-    });
-
-    if (notifications && notifications.notification.length) {
-      return { status: 200, data: { notifications } };
-    }
-    return { status: 404 };
   } catch (error) {
     return { status: 500 };
   }

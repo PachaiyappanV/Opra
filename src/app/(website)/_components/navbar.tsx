@@ -11,7 +11,7 @@ const LandingPageNavBar = (props: Props) => {
   return (
     <div className="flex w-full justify-between items-center">
       <div className="text-3xl font-semibold flex items-center gap-x-3">
-        <Image alt="logo" src="/opra-logo.svg" width={40} height={40} />
+        <Image alt="logo" src="/opal-logo.svg" width={40} height={40} />
         Opal
       </div>
 
