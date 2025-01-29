@@ -1,6 +1,7 @@
 "use server";
 import { client } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
+
 export const onAuthenticateUser = async () => {
   try {
     const user = await currentUser();
@@ -91,7 +92,42 @@ export const getNotifications = async () => {
     });
 
     if (notifications && notifications.notification.length) {
-      return { status: 200, data: { notifications } };
+      return { status: 200, notifications };
+    }
+    return { status: 404 };
+  } catch (error) {
+    return { status: 500 };
+  }
+};
+
+export const searchUsers = async (query: string) => {
+  try {
+    const user = await currentUser();
+    if (!user) {
+      return { status: 401 };
+    }
+
+    const users = await client.user.findMany({
+      where: {
+        OR: [
+          { firstname: { contains: query } },
+          { lastname: { contains: query } },
+          { email: { contains: query } },
+        ],
+        NOT: [{ clerkid: user.id }],
+      },
+      select: {
+        id: true,
+        subscription: { select: { plan: true } },
+        firstname: true,
+        lastname: true,
+        image: true,
+        email: true,
+      },
+    });
+
+    if (users && users.length) {
+      return { status: 200, users };
     }
     return { status: 404 };
   } catch (error) {
