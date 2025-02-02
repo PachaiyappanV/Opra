@@ -22,7 +22,7 @@ export const useMutationData = (
       return toast(
         data?.status === 200 || data?.status === 201 ? "Success" : "Error",
         {
-          description: data?.data,
+          description: data?.message,
         }
       );
     },
