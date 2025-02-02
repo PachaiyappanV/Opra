@@ -15,7 +15,7 @@ import { NotificationProps, WorkspaceProps } from "@/types/index.type";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import Modal from "../modal";
-import { Menu, PanelRightOpen, PlusCircle } from "lucide-react";
+import { Menu, PlusCircle } from "lucide-react";
 import UserSearch from "../search";
 import { useQuery } from "@tanstack/react-query";
 import { getNotifications } from "@/actions/user";
@@ -52,7 +52,7 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
   const { notifications } = notificationData as NotificationProps;
   const notificationCount = notifications?._count.notification || 0;
 
-  const currentWorkspace = user.workspace.find(
+  const currentWorkspace = user?.workspace.find(
     (workspace) => workspace.id === activeWorkspaceId
   );
 
@@ -78,12 +78,12 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
           <SelectGroup>
             <SelectLabel>Workspaces</SelectLabel>
             <Separator />
-            {user.workspace.map((workspace) => (
+            {user?.workspace.map((workspace) => (
               <SelectItem key={workspace.id} value={workspace.id}>
                 {workspace.name}
               </SelectItem>
             ))}
-            {user.members.length > 0 &&
+            {user?.members.length > 0 &&
               user.members.map((workspace) => (
                 <SelectItem
                   key={workspace.WorkSpace.id}
@@ -196,20 +196,20 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
   return (
     <div className="">
       <InfoBar />
-      <div className="fixed my-4 lg:hidden">
-        <Sheet>
-          <SheetTrigger asChild className="ml-3">
-            <p className="mt-[6px] cursor-pointer">
-              <PanelRightOpen color="#9D9D9D" size={29} />
-            </p>
-          </SheetTrigger>
-          <SheetTitle className="hidden">h</SheetTitle>
-          <SheetContent side="left" className="p-0 w-fit h-full">
-            {SidebarSection}
-          </SheetContent>
-        </Sheet>
+      <div className="fixed top-[21px] left-6  cursor-pointer md:hidden ">
+        <div className=" hover:bg-[#111111] px-[3px] py-[0.8px] rounded-[3px]">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Menu color="#9D9D9D" size={29} />
+            </SheetTrigger>
+            <SheetTitle className="hidden">h</SheetTitle>
+            <SheetContent side="left" className="p-0 w-fit  h-full">
+              {SidebarSection}
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
-      <div className="hidden lg:block h-full">{SidebarSection}</div>
+      <div className="hidden md:block h-full">{SidebarSection}</div>
     </div>
   );
 };
