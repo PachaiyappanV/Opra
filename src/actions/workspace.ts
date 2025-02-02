@@ -31,9 +31,9 @@ export const verifyAccessToWorkspace = async (workSpaceId: string) => {
         ],
       },
     });
-    return { status: 200, data: { workspace: isUserInWorkspace } };
+    return { status: 200, workspace: isUserInWorkspace };
   } catch (error) {
-    return { status: 403, data: { workspace: null } };
+    return { status: 403 };
   }
 };
 
@@ -53,11 +53,11 @@ export const getWorkspaceFolders = async (workSpaceId: string) => {
     });
 
     if (isFolders && isFolders.length) {
-      return { status: 200, data: { folders: isFolders } };
+      return { status: 200, folders: isFolders };
     }
-    return { status: 404, data: [] };
+    return { status: 404 };
   } catch (error) {
-    return { status: 500, data: [] };
+    return { status: 500 };
   }
 };
 
@@ -98,8 +98,9 @@ export const getWorkspaceVideos = async (workSpaceId: string) => {
     });
 
     if (videos && videos.length) {
-      return { status: 200, data: { videos } };
+      return { status: 200, videos };
     }
+    return { status: 404 };
   } catch (error) {
     return { status: 500 };
   }
