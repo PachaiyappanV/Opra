@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import FolderPlusDuotine from "@/components/icons/folder-plus-duotone";
 import { useQuery } from "@tanstack/react-query";
 import { getWorkspaces } from "@/actions/workspace";
+import WorkspaceForm from "@/components/forms/workspace-form";
 
 const CreateWorkspace = () => {
   const { data } = useQuery({
@@ -39,7 +40,7 @@ const CreateWorkspace = () => {
           </Button>
         }
       >
-        workspaceform
+        <WorkspaceForm />
       </Modal>
     );
 };
