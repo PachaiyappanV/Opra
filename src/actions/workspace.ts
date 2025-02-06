@@ -3,6 +3,7 @@
 import { client } from "@/lib/prisma";
 
 import { currentUser } from "@clerk/nextjs/server";
+
 export const verifyAccessToWorkspace = async (workSpaceId: string) => {
   try {
     const user = await currentUser();
@@ -196,5 +197,25 @@ export const createWorkspace = async (name: string) => {
     };
   } catch (error) {
     return { status: 500 };
+  }
+};
+
+export const createFolder = async (workspaceId: string) => {
+  try {
+    const isNewFolder = await client.workSpace.update({
+      where: {
+        id: workspaceId,
+      },
+      data: {
+        folders: {
+          create: { name: "Untitled" },
+        },
+      },
+    });
+    if (isNewFolder) {
+      return { status: 201, message: "New Folder Created" };
+    }
+  } catch (error) {
+    return { status: 500, message: "Oops something went wrong" };
   }
 };
