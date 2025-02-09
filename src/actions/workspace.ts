@@ -238,3 +238,28 @@ export const renameFolders = async (folderId: string, name: string) => {
     return { status: 500, message: "Oops! something went wrong" };
   }
 };
+
+export const getFolderInfo = async (folderId: string) => {
+  try {
+    const folder = await client.folder.findUnique({
+      where: {
+        id: folderId,
+      },
+      select: {
+        name: true,
+        _count: {
+          select: {
+            videos: true,
+          },
+        },
+      },
+    });
+
+    if (folder) {
+      return { status: 200, folder };
+    }
+    return { status: 404 };
+  } catch (error) {
+    return { status: 500 };
+  }
+};
