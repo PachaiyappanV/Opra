@@ -62,7 +62,7 @@ export const getWorkspaceFolders = async (workSpaceId: string) => {
   }
 };
 
-export const getWorkspaceVideos = async (workSpaceId: string) => {
+export const getVideos = async (id: string) => {
   try {
     const user = await currentUser();
     if (!user) {
@@ -71,7 +71,7 @@ export const getWorkspaceVideos = async (workSpaceId: string) => {
 
     const videos = await client.video.findMany({
       where: {
-        workSpaceId,
+        OR: [{ folderId: id }, { workSpaceId: id }],
       },
       select: {
         id: true,
