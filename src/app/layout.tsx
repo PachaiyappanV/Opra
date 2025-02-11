@@ -6,6 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import ReactQueryProvider from "@/react-query";
 import { dark } from "@clerk/themes";
 import { Toaster } from "sonner";
+import { ReduxProvider } from "@/redux/provider";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -34,10 +35,12 @@ export default function RootLayout({
             defaultTheme="dark"
             disableTransitionOnChange
           >
-            <ReactQueryProvider>
-              {children}
-              <Toaster />
-            </ReactQueryProvider>
+            <ReduxProvider>
+              <ReactQueryProvider>
+                {children}
+                <Toaster />
+              </ReactQueryProvider>
+            </ReduxProvider>
           </ThemeProvider>
         </body>
       </html>
