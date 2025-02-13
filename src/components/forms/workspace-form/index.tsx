@@ -10,7 +10,7 @@ const WorkspaceForm = () => {
   const { mutate, isPending } = useMutationData(
     ["create-workspace"],
     (workspace: { name: string }) => createWorkspace(workspace.name),
-    "user-workspaces"
+    [["user-workspaces"]]
   );
 
   const { register, errors, onFormSubmit } = useZodForm(
