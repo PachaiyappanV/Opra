@@ -152,6 +152,7 @@ export const getPaymentInfo = async () => {
     if (payment) {
       return { status: 200, payment };
     }
+    return { status: 404 };
   } catch (error) {
     return { status: 500 };
   }
@@ -175,6 +176,28 @@ export const enableFirstView = async (state: boolean) => {
     if (view) {
       return { status: 200, message: "Setting updated" };
     }
+    return { status: 400, message: "Failed to update" };
+  } catch (error) {
+    return { status: 500 };
+  }
+};
+
+export const getFirstView = async () => {
+  try {
+    const user = await currentUser();
+    if (!user) return { status: 401 };
+    const userData = await client.user.findUnique({
+      where: {
+        clerkid: user.id,
+      },
+      select: {
+        firstView: true,
+      },
+    });
+    if (userData) {
+      return { status: 200, firstView: userData.firstView };
+    }
+    return { status: 404 };
   } catch (error) {
     return { status: 500 };
   }
