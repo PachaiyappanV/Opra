@@ -32,7 +32,7 @@ const Folder = ({ id, name, optimistic, count }: Props) => {
   const { mutate } = useMutationData(
     ["rename-folders"],
     (data: { name: string }) => renameFolders(id, data.name),
-    "workspace-folders",
+    [["workspace-folders"]],
     Renamed
   );
 
