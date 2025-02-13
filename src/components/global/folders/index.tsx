@@ -1,25 +1,29 @@
 "use client";
 import FolderDuotone from "@/components/icons/folder-duotone";
-import { cn } from "@/lib/utils";
-import { ArrowRight } from "lucide-react";
 
 import Folder from "./folder";
-
 import { getWorkspaceFolders } from "@/actions/workspace";
 import { useMutationDataState } from "@/hooks/use-mutation-data";
 import { useQuery } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
+import { FOLDERS } from "@/redux/slices/folders";
+import Videos from "../videos";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Props = {
   workspaceId: string;
 };
 
 const Folders = ({ workspaceId }: Props) => {
-  const { data } = useQuery({
+  const dispatch = useDispatch();
+  const { data, isFetched, isPending } = useQuery({
     queryKey: ["workspace-folders"],
     queryFn: () => getWorkspaceFolders(workspaceId),
   });
 
-  //const { status, folders } = data as FoldersProps;
+  if (isFetched && data?.folders) {
+    dispatch(FOLDERS({ folders: data.folders }));
+  }
 
   const { latestVariables } = useMutationDataState(["create-folder"]);
 
@@ -30,28 +34,19 @@ const Folders = ({ workspaceId }: Props) => {
           <FolderDuotone />
           <h2 className="text-[#BDBDBD] text-xl"> Folders</h2>
         </div>
-        <div className="flex items-center gap-2">
-          <p className="text-[#BDBDBD]">See all</p>
-          <ArrowRight color="#707070" />
-        </div>
       </div>
-      <div
-        className={cn(
-          data?.status !== 200 && "justify-center",
-          "flex items-center gap-4 overflow-x-auto w-full"
-        )}
-      >
-        {data?.status !== 200 ? (
+      <div className="flex flex-wrap gap-4 w-full">
+        {isPending ? (
+          <>
+            <Skeleton className="h-[78px] w-[250px]" />
+            <Skeleton className="h-[78px] w-[250px]" />
+            <Skeleton className="h-[78px] w-[250px]" />
+            <Skeleton className="h-[78px] w-[250px]" />
+          </>
+        ) : data?.status !== 200 ? (
           <p className="text-neutral-300">No folders in workspace</p>
         ) : (
           <>
-            {latestVariables && latestVariables.status === "pending" && (
-              <Folder
-                name={latestVariables.variables.name}
-                id={latestVariables.variables.id}
-                optimistic
-              />
-            )}
             {data.folders?.map((folder) => (
               <Folder
                 name={folder.name}
@@ -60,9 +55,21 @@ const Folders = ({ workspaceId }: Props) => {
                 key={folder.id}
               />
             ))}
+            {latestVariables && latestVariables.status === "pending" && (
+              <Folder
+                name={latestVariables.variables.name}
+                id={latestVariables.variables.id}
+                optimistic
+              />
+            )}
           </>
         )}
       </div>
+      <Videos
+        workspaceId={workspaceId}
+        folderId={workspaceId}
+        videosKey="workspace-videos"
+      />
     </div>
   );
 };
