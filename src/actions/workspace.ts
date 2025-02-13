@@ -51,6 +51,9 @@ export const getWorkspaceFolders = async (workSpaceId: string) => {
           },
         },
       },
+      orderBy: {
+        createdAt: "asc",
+      },
     });
 
     if (isFolders && isFolders.length) {
