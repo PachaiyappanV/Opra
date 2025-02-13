@@ -31,6 +31,8 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import InfoBar from "../info-bar";
+import { useDispatch } from "react-redux";
+import { WORKSPACES } from "@/redux/slices/workspaces";
 
 type Props = {
   activeWorkspaceId: string;
@@ -38,12 +40,18 @@ type Props = {
 const Sidebar = ({ activeWorkspaceId }: Props) => {
   const router = useRouter();
   const pathName = usePathname();
+  const dispatch = useDispatch();
+
   const menuItems = MENU_ITEMS(activeWorkspaceId);
-  const { data } = useQuery({
+  const { data, isFetched } = useQuery({
     queryKey: ["user-workspaces"],
     queryFn: () => getWorkspaces(),
   });
+
   const { user } = data as WorkspaceProps;
+  if (isFetched && user) {
+    dispatch(WORKSPACES({ workspaces: user.workspace }));
+  }
 
   const { data: notificationData } = useQuery({
     queryKey: ["user-notifications"],
@@ -134,7 +142,7 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
       </nav>
       <Separator className="w-4/5" />
       <p className="w-full text-[#9D9D9D] font-bold mt-4 ">Workspaces</p>
-      {user.workspace.length === 1 && user.members.length === 0 && (
+      {user?.workspace.length === 1 && user?.members.length === 0 && (
         <div className="w-full mt-[-10px]">
           <p className="text-[#3c3c3c] font-medium text-sm">
             {user.subscription?.plan === "FREE"
@@ -147,10 +155,10 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
       <nav className="w-full">
         <ul
           className={`${
-            user.subscription?.plan === "FREE" ? "h-[60px]" : "h-[150px]"
+            user?.subscription?.plan === "FREE" ? "h-[60px]" : "h-[150px]"
           } overflow-auto overflow-x-hidden fade-layer`}
         >
-          {user.workspace.map(
+          {user?.workspace.map(
             (workspace) =>
               workspace.type !== "PERSONAL" && (
                 <SidebarItem
@@ -166,7 +174,7 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
                 />
               )
           )}
-          {user.members.length > 0 &&
+          {user?.members.length > 0 &&
             user.members.map((item) => (
               <SidebarItem
                 key={item.WorkSpace.id}
@@ -183,7 +191,7 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
         </ul>
       </nav>
       <Separator className="w-4/5" />
-      {user.subscription?.plan === "FREE" && (
+      {user?.subscription?.plan === "FREE" && (
         <GlobalCard
           title="Upgrade to Pro"
           description=" Unlock AI features like transcription, AI summary, and more."
@@ -196,7 +204,7 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
   return (
     <div className="">
       <InfoBar />
-      <div className="fixed top-[21px] left-6  cursor-pointer md:hidden ">
+      <div className="fixed top-[21px] left-6  cursor-pointer lg:hidden ">
         <div className=" hover:bg-[#111111] px-[3px] py-[0.8px] rounded-[3px]">
           <Sheet>
             <SheetTrigger asChild>
@@ -209,7 +217,7 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
           </Sheet>
         </div>
       </div>
-      <div className="hidden md:block h-full">{SidebarSection}</div>
+      <div className="hidden lg:block h-full">{SidebarSection}</div>
     </div>
   );
 };
