@@ -10,7 +10,7 @@ import { toast } from "sonner";
 export const useMutationData = (
   mutationKey: MutationKey,
   mutationFn: MutationFunction<any, any>,
-  queryKey?: string,
+  queryKeys?: string[][],
   onSuccess?: () => void
 ) => {
   const client = useQueryClient();
@@ -28,10 +28,19 @@ export const useMutationData = (
       );
     },
     onSettled: async () => {
-      return await client.invalidateQueries({
-        queryKey: [queryKey],
-        exact: true,
-      });
+      if (queryKeys && queryKeys[0]) {
+        await client.invalidateQueries({
+          queryKey: queryKeys[0],
+          exact: true,
+        });
+      }
+
+      if (queryKeys && queryKeys[1]) {
+        await client.invalidateQueries({
+          queryKey: queryKeys[1],
+          exact: true,
+        });
+      }
     },
   });
 
