@@ -14,21 +14,13 @@ const CreateWorkspace = () => {
     queryKey: ["user-workspaces"],
     queryFn: () => getWorkspaces(),
   });
+  const subscription = data?.user?.subscription;
 
-  const { data: plan } = data as {
-    status: number;
-    data: {
-      subscription: {
-        plan: "PRO" | "FREE";
-      } | null;
-    };
-  };
-
-  if (plan?.subscription?.plan === "FREE") {
+  if (subscription?.plan === "FREE") {
     return <></>;
   }
 
-  if (plan?.subscription?.plan === "PRO")
+  if (subscription?.plan === "PRO") {
     return (
       <Modal
         title="Create a Workspace"
@@ -43,6 +35,7 @@ const CreateWorkspace = () => {
         <WorkspaceForm />
       </Modal>
     );
+  }
 };
 
 export default CreateWorkspace;
