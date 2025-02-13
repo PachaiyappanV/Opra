@@ -156,3 +156,26 @@ export const getPaymentInfo = async () => {
     return { status: 500 };
   }
 };
+
+export const enableFirstView = async (state: boolean) => {
+  try {
+    const user = await currentUser();
+
+    if (!user) return { status: 401 };
+
+    const view = await client.user.update({
+      where: {
+        clerkid: user.id,
+      },
+      data: {
+        firstView: state,
+      },
+    });
+
+    if (view) {
+      return { status: 200, message: "Setting updated" };
+    }
+  } catch (error) {
+    return { status: 500 };
+  }
+};
