@@ -133,3 +133,26 @@ export const searchUsers = async (query: string) => {
     return { status: 500 };
   }
 };
+
+export const getPaymentInfo = async () => {
+  try {
+    const user = await currentUser();
+    if (!user) return { status: 401 };
+
+    const payment = await client.user.findUnique({
+      where: {
+        clerkid: user.id,
+      },
+      select: {
+        subscription: {
+          select: { plan: true },
+        },
+      },
+    });
+    if (payment) {
+      return { status: 200, payment };
+    }
+  } catch (error) {
+    return { status: 500 };
+  }
+};
