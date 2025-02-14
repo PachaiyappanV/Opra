@@ -5,7 +5,7 @@ const BillingPage = async () => {
   const data = await getPaymentInfo();
 
   return (
-    <div className="bg-[#1D1D1D] flex flex-col gap-y-8 p-5 rounded-xl">
+    <div className=" bg-[#E0E0E0] dark:bg-[#1D1D1D] flex flex-col gap-y-8 p-5 rounded-xl">
       <div>
         <h2 className="text-2xl">Current Plan</h2>
         <p className="text-[#9D9D9D]">Your Payment Histroy</p>

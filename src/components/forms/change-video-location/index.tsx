@@ -36,27 +36,27 @@ const ChangeVideoLocation = ({
   return (
     <form className="flex flex-col gap-y-5" onSubmit={onFormSubmit}>
       <div className="boder-[1px] rounded-xl p-5">
-        <h2 className="text-xs text-[#a4a4a4]">Current Workspace</h2>
+        <h2 className="text-sm text-[#a4a4a4]">Current Workspace</h2>
         {workspace && <p>{workspace.name}</p>}
-        <h2 className="text-xs text-[#a4a4a4] mt-4">Current Folder</h2>
+        <h2 className="text-sm text-[#a4a4a4] mt-4">Current Folder</h2>
         {folder ? <p>{folder.name}</p> : "This video has no folder"}
       </div>
 
       <Separator orientation="horizontal" />
       <div className="flex flex-col gap-y-5 p-5 border-[1px] rounded-xl">
-        <h2 className="text-xs text-[#a4a4a4]">To</h2>
+        <h2 className="text-sm text-[#a4a4a4]">To</h2>
         <Label className="flex-col gap-y-2 flex">
           <p className="text-sm">Workspace</p>
           <div className="relative w-full ">
             <select
               id="workspace-select"
-              className="w-full appearance-none  rounded-md border border-neutral-600 bg-neutral-900 p-2 text-base text-[#a4a4a4] "
+              className="w-full appearance-none  rounded-md border dark:border-neutral-600 dark:bg-neutral-900 p-2 text-base text-neutral-700 dark:text-[#a4a4a4] "
               {...register("workspace_id")}
             >
               {workspaces.map((space) => (
                 <option
                   key={space.id}
-                  className=" bg-neutral-800 text-[#a4a4a4]"
+                  className=" dark:bg-neutral-800 text-neutral-700 dark:text-[#a4a4a4] "
                   value={space.id}
                 >
                   {space.name}
@@ -79,11 +79,11 @@ const ChangeVideoLocation = ({
                 <select
                   id="folder-select"
                   {...register("folder_id")}
-                  className=" appearance-none w-full rounded-md border border-neutral-600 bg-neutral-900 p-2 text-base text-[#a4a4a4] "
+                  className=" appearance-none w-full rounded-md border dark:border-neutral-600 dark:bg-neutral-900 p-2 text-base text-neutral-700 dark:text-[#a4a4a4] "
                 >
                   {isFolders.map((folder) => (
                     <option
-                      className="bg-neutral-800 text-[#a4a4a4]"
+                      className="dark:bg-neutral-800 text-neutral-700 dark:text-[#a4a4a4] "
                       key={folder.id}
                       value={folder.id}
                     >
@@ -104,7 +104,10 @@ const ChangeVideoLocation = ({
           </Label>
         )}
       </div>
-      <Button>
+      <Button
+        variant="outline"
+        className="bg-[#E0E0E0]  dark:bg-[#1D1D1D] text-[#707070]"
+      >
         <Loader state={isPending} color="#000">
           Move
         </Loader>

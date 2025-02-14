@@ -32,7 +32,7 @@ const Folders = ({ workspaceId }: Props) => {
       <div className="flex items-center  justify-between">
         <div className="flex items-center gap-4">
           <FolderDuotone />
-          <h2 className="text-[#BDBDBD] text-xl"> Folders</h2>
+          <h2 className="dark:text-[#BDBDBD] text-xl"> Folders</h2>
         </div>
       </div>
       <div className="flex flex-wrap gap-4 w-full">
@@ -44,7 +44,7 @@ const Folders = ({ workspaceId }: Props) => {
             <Skeleton className="h-[78px] w-[250px]" />
           </>
         ) : data?.status !== 200 ? (
-          <p className="text-neutral-300">No folders in workspace</p>
+          <p className="text-neutral-500">No folders in workspace</p>
         ) : (
           <>
             {data.folders?.map((folder) => (

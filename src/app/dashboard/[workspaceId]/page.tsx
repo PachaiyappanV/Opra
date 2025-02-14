@@ -31,13 +31,13 @@ const WorkspacePage = async ({ params }: Props) => {
           <TabsList className="bg-transparent gap-2 pl-0">
             <TabsTrigger
               value="videos"
-              className="p-[13px] px-6 rounded-full data-[state=active]:bg-[#252525]"
+              className="p-[13px] px-6 rounded-full data-[state=active]:bg-[#E0E0E0] dark:data-[state=active]:bg-[#252525]"
             >
               Videos
             </TabsTrigger>
             <TabsTrigger
               value="archive"
-              className="p-[13px] px-6 rounded-full data-[state=active]:bg-[#252525]"
+              className="p-[13px] px-6 rounded-full data-[state=active]:bg-[#E0E0E0] dark:data-[state=active]:bg-[#252525]"
             >
               Archive
             </TabsTrigger>

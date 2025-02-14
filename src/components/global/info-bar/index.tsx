@@ -1,4 +1,4 @@
-import VideoRecorderIcon from "@/components/icons/video-recorder";
+import VideoRecorderDuotone from "@/components/icons/video-recorder-duotone";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UserButton } from "@clerk/nextjs";
@@ -7,7 +7,7 @@ import React from "react";
 
 const InfoBar = () => {
   return (
-    <header className="pl-20 md:pl-[265px] fixed p-4 w-full flex items-center justify-between gap-4">
+    <header className="pl-20 md:pl-[265px] backdrop-blur-3xl fixed p-4 w-full flex items-center justify-between gap-4">
       <div className="flex gap-4 justify-center items-center border-2 rounded-full px-4 w-full max-w-lg">
         <Search size={25} className="text-[#707070]" />
         <Input
@@ -16,8 +16,11 @@ const InfoBar = () => {
         />
       </div>
       <div className="flex items-center gap-4">
-        <Button className="bg-[#9D9D9D] flex items-center gap-2">
-          <VideoRecorderIcon />
+        <Button
+          variant="outline"
+          className="bg-[#E0E0E0] dark:bg-[#1D1D1D] text-[#707070] flex items-center gap-2"
+        >
+          <VideoRecorderDuotone />
           <span className="flex items-center gap-2">Record</span>
         </Button>
         <UserButton />

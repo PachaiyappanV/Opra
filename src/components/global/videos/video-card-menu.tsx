@@ -21,7 +21,7 @@ const CardMenu = ({
       className="flex items-center cursor-pointer gap-x-2"
       title="Move to new Workspace/Folder"
       description="This action cannot be undone."
-      trigger={<Move size={20} className="text-[#b4b3b3]" />}
+      trigger={<Move size={20} className="dark:text-[#b4b3b3]" />}
     >
       <ChangeVideoLocation
         currentFolder={currentFolder}
