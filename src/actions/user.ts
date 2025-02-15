@@ -202,3 +202,23 @@ export const getFirstView = async () => {
     return { status: 500 };
   }
 };
+export const getUserProfile = async () => {
+  try {
+    const user = await currentUser();
+    if (!user) return { status: 401 };
+    const profile = await client.user.findUnique({
+      where: {
+        clerkid: user.id,
+      },
+      select: {
+        image: true,
+        id: true,
+      },
+    });
+
+    if (profile) return { status: 200, profile };
+    return { status: 404 };
+  } catch (error) {
+    return { status: 500 };
+  }
+};
