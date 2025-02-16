@@ -202,6 +202,7 @@ export const getFirstView = async () => {
     return { status: 500 };
   }
 };
+
 export const getUserProfile = async () => {
   try {
     const user = await currentUser();
@@ -218,6 +219,29 @@ export const getUserProfile = async () => {
 
     if (profile) return { status: 200, profile };
     return { status: 404 };
+  } catch (error) {
+    return { status: 500 };
+  }
+};
+
+export const getVideoComments = async (Id: string) => {
+  try {
+    const comments = await client.comment.findMany({
+      where: {
+        OR: [{ videoId: Id }, { commentId: Id }],
+        commentId: null,
+      },
+      include: {
+        reply: {
+          include: {
+            User: true,
+          },
+        },
+        User: true,
+      },
+    });
+
+    return { status: 200, comments };
   } catch (error) {
     return { status: 500 };
   }
