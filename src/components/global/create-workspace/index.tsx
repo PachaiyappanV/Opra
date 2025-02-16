@@ -28,7 +28,7 @@ const CreateWorkspace = () => {
         trigger={
           <Button
             variant="outline"
-            className=" bg-[#E0E0E0] dark:bg-[#1D1D1D]  text-[#707070] flex items-center gap-2 py-6 px-4 rounded-2xl"
+            className=" bg-transparent   text-[#707070] flex items-center gap-2 py-6 px-4 rounded-2xl"
           >
             <FolderPlusDuotine />
             Create Workspace

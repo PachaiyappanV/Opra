@@ -18,7 +18,7 @@ const InfoBar = () => {
       <div className="flex items-center gap-4">
         <Button
           variant="outline"
-          className="bg-[#E0E0E0] dark:bg-[#1D1D1D] text-[#707070] flex items-center gap-2"
+          className="bg-transparent text-[#707070] flex items-center gap-2"
         >
           <VideoRecorderDuotone />
           <span className="flex items-center gap-2">Record</span>
