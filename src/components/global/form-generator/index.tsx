@@ -15,6 +15,7 @@ type Props = {
   name: string;
   errors: FieldErrors<FieldValues>;
   lines?: number;
+  onFocus: () => void;
 };
 
 const FormGenerator = ({
@@ -27,6 +28,7 @@ const FormGenerator = ({
   errors,
   type,
   lines,
+  onFocus,
 }: Props) => {
   switch (inputType) {
     case "input":
@@ -91,11 +93,12 @@ const FormGenerator = ({
         <Label className="flex flex-col gap-2" htmlFor={`input-${label}`}>
           {label && label}
           <Textarea
-            className="bg-transparent border-themeGray text-themeTextGray"
+            className="bg-transparent  resize-none h-auto border-themeGray text-themeTextGray"
             id={`input-${label}`}
             placeholder={placeholder}
             rows={lines}
             {...register(name)}
+            onFocus={onFocus}
           />
           <ErrorMessage
             errors={errors}
