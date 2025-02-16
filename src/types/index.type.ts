@@ -39,3 +39,47 @@ export type NotificationProps = {
     };
   };
 };
+
+export type VideoProps = {
+  status: number;
+  video: {
+    User: {
+      firstname: string | null;
+      lastname: string | null;
+      image: string | null;
+      clerkId: string;
+      trial: boolean;
+      subscription: {
+        plan: "PRO" | "FREE";
+      } | null;
+    } | null;
+    title: string | null;
+    description: string | null;
+    source: string;
+    views: number;
+    createdAt: Date;
+    processing: boolean;
+    summery: string;
+  };
+  author: boolean;
+};
+
+export type CommentRepliesProps = {
+  id: string;
+  comment: string;
+  createdAt: Date;
+  commentId: string | null;
+  userId: string | null;
+  videoId: string | null;
+  User: {
+    id: string;
+    email: string;
+    firstname: string | null;
+    lastname: string | null;
+    createdAt: Date;
+    clerkid: string;
+    image: string | null;
+    trial: boolean;
+    firstView: boolean;
+  } | null;
+};
