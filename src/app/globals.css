@@ -103,13 +103,13 @@
 
 /* Width & Height */
 ::-webkit-scrollbar {
-  width: 4px; /* For vertical scrollbar */
+  width: 2px; /* For vertical scrollbar */
   height: 8px; /* For horizontal scrollbar */
 }
 
 /* Track (background) */
 ::-webkit-scrollbar-track {
-  background: #c8c8c8;
+  background: #d8d8d8;
   border-radius: 10px;
 }
 
