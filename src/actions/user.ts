@@ -1,6 +1,24 @@
 "use server";
 import { client } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
+import nodemailer from "nodemailer";
+
+export const sendEmail = async (to: string, subject: string, html: string) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.MAILER_EMAIL,
+      pass: process.env.MAILER_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    to,
+    subject,
+    html,
+  };
+  return { transporter, mailOptions };
+};
 
 export const onAuthenticateUser = async () => {
   try {
@@ -290,5 +308,188 @@ export const createCommentAndReply = async (
     if (newComment) return { status: 200, data: "New comment added" };
   } catch (error) {
     return { status: 500 };
+  }
+};
+
+export const inviteMembers = async (
+  workspaceId: string,
+  recieverId: string,
+  email: string
+) => {
+  try {
+    const user = await currentUser();
+    if (!user) return { status: 404, message: "User not found" };
+
+    // Fetch sender details
+    const senderInfo = await client.user.findUnique({
+      where: { clerkid: user.id },
+      select: { id: true, firstname: true, lastname: true },
+    });
+
+    if (!senderInfo) return { status: 404, message: "Sender not found" };
+
+    // Fetch workspace details
+    const workspace = await client.workSpace.findUnique({
+      where: { id: workspaceId },
+      select: { name: true },
+    });
+
+    if (!workspace) return { status: 404, message: "Workspace not found" };
+
+    // Fetch recipient details
+    const recipientInfo = await client.user.findUnique({
+      where: { id: recieverId },
+      select: { firstname: true, lastname: true },
+    });
+
+    if (!recipientInfo) return { status: 404, message: "Recipient not found" };
+
+    // Create invitation
+    const invitation = await client.invite.create({
+      data: {
+        senderId: senderInfo.id,
+        recieverId,
+        workSpaceId: workspaceId,
+        content: `You are invited to join ${workspace.name} Workspace, click accept to confirm.`,
+      },
+      select: { id: true },
+    });
+
+    if (!invitation) return { status: 400, message: "Invitation failed" };
+
+    // Create notification for the recipient
+    await client.user.update({
+      where: { id: recieverId },
+      data: {
+        notification: {
+          create: {
+            content: `${senderInfo.firstname ?? "Unknown"} ${
+              senderInfo.lastname ?? ""
+            } invited you to join ${workspace.name}.`,
+          },
+        },
+      },
+    });
+
+    // Send invitation email
+    try {
+      const { transporter, mailOptions } = await sendEmail(
+        email,
+        "You got an invitation",
+        `<html>
+  <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; text-align: center;">
+    <div style=" margin: auto; background: #ffffff; border-radius: 16px; box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1); padding: 40px 20px;">
+      
+      <!-- Opal Logo -->
+      <img src="https://res.cloudinary.com/dt7mnfm6r/image/upload/v1739801435/vzb4nfdagyzxjj2j3liw.png" alt="Opal Logo" 
+        style="width: 80px; margin-bottom: 20px;">
+
+      <!-- Heading -->
+      <h1 style="color: #333; font-size: 28px; font-weight: bold; margin-bottom: 7px;">You're Invited to Join</h1>
+      <h2 style="color: #007bff; font-size: 26px; margin-top: 0; font-weight: 600;">${
+        workspace.name
+      } on Opal</h2>
+
+      <!-- Invitation Message -->
+      <p style="color: #444; font-size: 18px; line-height: 1.6; margin-bottom: 15px;">
+        <strong>${senderInfo.firstname} ${
+          senderInfo.lastname
+        }</strong> has invited you to collaborate in the workspace 
+        <strong>${workspace.name}</strong> on Opal. 
+      </p>
+
+      <p style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
+        Opal makes team communication smoother with async video messaging. Join now and start collaborating!
+      </p>
+
+      <!-- Call to Action Button -->
+      <a href="${process.env.NEXT_PUBLIC_HOST_URL}/invite/${invitation.id}" 
+        style="background: linear-gradient(135deg, #007bff, #0056b3); color: #ffffff; padding: 16px 40px; border-radius: 10px; 
+               text-decoration: none; font-weight: bold; font-size: 18px; display: inline-block; 
+               box-shadow: 0px 4px 12px rgba(0, 123, 255, 0.3); transition: all 0.3s ease-in-out;">
+        Accept Invitation
+      </a>
+
+      <!-- Subtle Note -->
+      <p style="color: #888; font-size: 14px; margin-top: 30px;">
+        If you didn’t request this invitation, you can safely ignore this email.
+      </p>
+
+      <!-- Footer -->
+      <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;">
+      <p style="color: #aaa; font-size: 13px;">
+        Opal Team &copy; ${new Date().getFullYear()} | <a href="https://your-opal-website.com" style="color: #007bff; text-decoration: none;">Visit Opal</a>
+      </p>
+    </div>
+  </body>
+</html>`
+      );
+
+      await transporter.sendMail(mailOptions);
+    } catch (error) {
+      return { status: 400, message: "Invite failed" };
+    }
+
+    return { status: 200, message: "Invite sent" };
+  } catch (error) {
+    return { status: 500, message: "Oops! Something went wrong" };
+  }
+};
+
+export const acceptInvite = async (inviteId: string) => {
+  try {
+    const user = await currentUser();
+    if (!user)
+      return {
+        status: 404,
+      };
+    const invitation = await client.invite.findUnique({
+      where: {
+        id: inviteId,
+      },
+      select: {
+        workSpaceId: true,
+        reciever: {
+          select: {
+            clerkid: true,
+          },
+        },
+      },
+    });
+
+    if (user.id !== invitation?.reciever?.clerkid) return { status: 401 };
+    const acceptInvite = client.invite.update({
+      where: {
+        id: inviteId,
+      },
+      data: {
+        accepted: true,
+      },
+    });
+
+    const updateMember = client.user.update({
+      where: {
+        clerkid: user.id,
+      },
+      data: {
+        members: {
+          create: {
+            workSpaceId: invitation.workSpaceId,
+          },
+        },
+      },
+    });
+
+    const membersTransaction = await client.$transaction([
+      acceptInvite,
+      updateMember,
+    ]);
+
+    if (membersTransaction) {
+      return { status: 200 };
+    }
+    return { status: 400 };
+  } catch (error) {
+    return { status: 400 };
   }
 };
