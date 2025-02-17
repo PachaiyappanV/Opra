@@ -7,6 +7,8 @@ import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { User } from "lucide-react";
 import { useState } from "react";
 import Loader from "../loader";
+import { useMutationData } from "@/hooks/use-mutation-data";
+import { inviteMembers } from "@/actions/user";
 
 type Props = {
   workspaceId: string;
@@ -14,6 +16,11 @@ type Props = {
 const UserSearch = ({ workspaceId }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
   const { users, isLoading } = useUserSearch(searchQuery);
+  const { mutate, isPending } = useMutationData(
+    ["invite-member"],
+    (data: { recieverId: string; email: string }) =>
+      inviteMembers(workspaceId, data.recieverId, data.email)
+  );
 
   return (
     <div className="flex flex-col gap-y-5">
@@ -52,8 +59,14 @@ const UserSearch = ({ workspaceId }: Props) => {
                 </p>
               </div>
               <div className="flex-1 flex justify-end items-center">
-                <Button variant={"default"} className="w-5/12 font-bold">
-                  <Loader state={true} color="#000">
+                <Button
+                  onClick={() =>
+                    mutate({ recieverId: user.id, email: user.email })
+                  }
+                  variant={"default"}
+                  className="w-5/12 font-bold"
+                >
+                  <Loader state={isPending} color="#000">
                     Invite
                   </Loader>
                 </Button>
