@@ -22,14 +22,14 @@ const Videos = ({ folderId, videosKey, workspaceId }: Props) => {
   });
 
   return (
-    <div className="flex flex-col gap-4 mt-4">
+    <div className="flex flex-col gap-4 mt-4 ">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <VideoRecorderDuotone />
           <h2 className="dark:text-[#BdBdBd] text-xl">Videos</h2>
         </div>
       </div>
-      <section className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
+      <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 ">
         {isPending ? (
           <>
             <Skeleton className="w-full h-[250px]" />
