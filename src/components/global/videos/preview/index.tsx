@@ -4,11 +4,14 @@ import { useRouter } from "next/navigation";
 import CopyLink from "../copy-link";
 import { truncateString } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { VideoProps } from "@/types/index.type";
+
 import TabMenu from "../../tabs";
 import VideoTranscript from "../../video-transcript";
 import RichLink from "../rich-link";
 import Activities from "../../activities";
+import { sendEmailForFirstView } from "@/actions/user";
+import { useEffect } from "react";
+import VideoPreviewSkeleton from "./preview-skeleton";
 
 type Props = {
   videoId: string;
@@ -17,40 +20,51 @@ type Props = {
 const VideoPreview = ({ videoId }: Props) => {
   const router = useRouter();
 
-  const { data } = useQuery({
-    queryKey: ["preview-video"],
+  const { data, isPending } = useQuery({
+    queryKey: ["preview-video", videoId],
     queryFn: () => getPreviewVideo(videoId),
   });
 
-  const { video, status } = data as VideoProps;
+  useEffect(() => {
+    sendEmailForFirstView(videoId);
+  }, [videoId]);
 
-  if (status === 401) {
-    router.push("/auth/sign-in");
+  useEffect(() => {
+    if (data?.status === 401) {
+      router.push("/auth/sign-in");
+    }
+  }, [data?.status, router]);
+
+  if (isPending) {
+    return <VideoPreviewSkeleton />;
   }
-  if (status !== 200) {
+
+  if (!data?.video || data?.status !== 200) {
     return (
-      <div className=" w-screen h-screen justify-center items-center text-2xl font-bold text-neutral-500">
+      <div className="flex h-[80vh]  justify-center items-center text-3xl font-bold text-neutral-500">
         Video not found
       </div>
     );
   }
 
   const daysAgo = Math.floor(
-    (new Date().getTime() - video.createdAt.getTime()) / (24 * 60 * 60 * 1000)
+    (new Date().getTime() -
+      new Date(data?.video?.createdAt as Date).getTime()) /
+      (24 * 60 * 60 * 1000)
   );
 
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-3  overflow-y-auto gap-5">
+    <div className="grid grid-cols-1 xl:grid-cols-3 overflow-y-auto gap-5">
       <div className="flex flex-col lg:col-span-2 gap-y-10">
         <div>
           <div className="flex gap-x-5 items-start justify-between">
             <h2 className="dark:text-white text-4xl font-bold">
-              {video.title}
+              {data.video.title}
             </h2>
           </div>
           <span className="flex gap-x-3 mt-2">
             <p className="dark:text-[#9D9D9D] capitalize">
-              {video.User?.firstname} {video.User?.lastname}
+              {data.video.User?.firstname} {data.video.User?.lastname}
             </p>
             <p className="text-[#707070]">
               {daysAgo === 0 ? "Today" : `${daysAgo}d ago`}
@@ -58,11 +72,11 @@ const VideoPreview = ({ videoId }: Props) => {
           </span>
         </div>
         <video
-          className="w-full aspect-video  dark:opacity-70 rounded-xl"
+          className="w-full aspect-video dark:opacity-70 rounded-xl"
           controls
         >
           <source
-            src={`${process.env.NEXT_PUBLIC_CLOUD_FRONT_STREAM_URL}/${video.source}#1`}
+            src={`${process.env.NEXT_PUBLIC_CLOUD_FRONT_STREAM_URL}/${data.video.source}#1`}
             type="video/mp4"
           />
         </video>
@@ -71,7 +85,7 @@ const VideoPreview = ({ videoId }: Props) => {
             <p className="dark:text-[#BDBDBD] text-semibold">Description</p>
           </div>
           <p className="text-[#707070] text-lg text-medium">
-            {video.description}
+            {data.video.description}
           </p>
         </div>
       </div>
@@ -79,14 +93,14 @@ const VideoPreview = ({ videoId }: Props) => {
         <div className="flex justify-end gap-x-3 items-center">
           <CopyLink
             variant="outline"
-            className="rounded-full  bg-transparent px-10"
+            className="rounded-full bg-transparent px-10"
             videoId={videoId}
           />
           <RichLink
-            description={truncateString(video.description as string, 150)}
+            description={truncateString(data.video.description as string, 150)}
             id={videoId}
-            source={video.source}
-            title={video.title as string}
+            source={data.video.source}
+            title={data.video.title as string}
           />
         </div>
         <div>
@@ -94,9 +108,9 @@ const VideoPreview = ({ videoId }: Props) => {
             defaultValue="Transcript"
             triggers={["Transcript", "Activity"]}
           >
-            <VideoTranscript transcript={video.summery!} />
+            <VideoTranscript transcript={data.video.summery!} />
             <Activities
-              author={video.User?.firstname as string}
+              author={data.video.User?.firstname as string}
               videoId={videoId}
             />
           </TabMenu>
