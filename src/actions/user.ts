@@ -441,7 +441,7 @@ export const acceptInvite = async (inviteId: string) => {
     const user = await currentUser();
     if (!user)
       return {
-        status: 404,
+        status: 401,
       };
     const invitation = await client.invite.findUnique({
       where: {
@@ -457,7 +457,7 @@ export const acceptInvite = async (inviteId: string) => {
       },
     });
 
-    if (user.id !== invitation?.reciever?.clerkid) return { status: 401 };
+    if (user.id !== invitation?.reciever?.clerkid) return { status: 403 };
     const acceptInvite = client.invite.update({
       where: {
         id: inviteId,
@@ -490,6 +490,98 @@ export const acceptInvite = async (inviteId: string) => {
     }
     return { status: 400 };
   } catch (error) {
-    return { status: 400 };
+    return { status: 500 };
+  }
+};
+
+export const sendEmailForFirstView = async (videoId: string) => {
+  try {
+    const user = await currentUser();
+    if (!user) return { status: 404 };
+    // Fetch the video along with its owner details
+    const video = await client.video.findUnique({
+      where: { id: videoId },
+      select: {
+        title: true,
+        views: true,
+        User: {
+          select: {
+            email: true,
+            clerkid: true,
+            firstView: true,
+          },
+        },
+        WorkSpace: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (!video) return { status: 404 };
+
+    if (video.User?.clerkid === user.id) return;
+
+    await client.video.update({
+      where: { id: videoId },
+      data: { views: { increment: 1 } }, // ✅ Atomic increment to avoid race conditions
+    });
+
+    // ✅ If this is the first view & owner has firstView notifications enabled
+    if (video.views === 0 && video.User?.firstView) {
+      const { transporter, mailOptions } = await sendEmail(
+        video.User.email,
+        "You got a viewer!",
+        `<html>
+  <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 40px; text-align: center;">
+    <div style=" background: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15); margin: auto;">
+
+      <!-- Header -->
+      <h1 style="color: #333; font-size: 26px; margin-bottom: 15px;">🎉 Your Video Got Its First Viewer! 🎉</h1>
+
+      <!-- Message -->
+      <p style="color: #444; font-size: 18px; line-height: 1.8;">
+        Congratulations! Your video <strong>"${
+          video.title
+        }"</strong> in workspace ${
+          video.WorkSpace?.name
+        } just received its first view on <strong>Opal</strong>.
+      </p>
+
+      
+
+      <!-- Footer -->
+      <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+      <p style="color: #aaa; font-size: 13px;">
+        Opal Team &copy; ${new Date().getFullYear()} | <a href="https://your-opal-website.com" style="color: #007bff; text-decoration: none;">Visit Opal</a>
+      </p>
+    </div>
+  </body>
+</html>
+`
+      );
+
+      // ✅ Send email before proceeding
+      await transporter.sendMail(mailOptions);
+
+      // ✅ Create a notification for the video owner
+      await client.user.update({
+        where: { clerkid: video.User.clerkid },
+        data: {
+          notification: {
+            create: {
+              content: `Congratulations! Your video "${video.title}" in workspace ${video.WorkSpace?.name} just received its first view`,
+            },
+          },
+        },
+      });
+
+      return { status: 200 };
+    }
+
+    return { status: 200 };
+  } catch (error) {
+    return { status: 500 };
   }
 };
