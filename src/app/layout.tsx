@@ -29,7 +29,7 @@ export default function RootLayout({
       }}
     >
       <html lang="en" suppressHydrationWarning>
-        <body className={`${manrope.className} dark:bg-[#171717]`}>
+        <body className={`${manrope.className}  dark:bg-[#171717]`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
