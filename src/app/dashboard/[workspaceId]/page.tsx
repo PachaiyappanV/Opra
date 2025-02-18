@@ -47,7 +47,7 @@ const WorkspacePage = async ({ params }: Props) => {
             <CreateFolders workspaceId={workspaceId} />
           </div>
         </div>
-        <section className="py-9">
+        <section className="pt-9">
           <TabsContent value="videos">
             <Folders workspaceId={workspaceId} />
           </TabsContent>
