@@ -34,7 +34,7 @@ const SidebarItem = ({ icon, title, href, selected, notifications }: Props) => {
         {notifications !== 0 && (
           <span
             className={cn(
-              "font-medium  mr-1 transition-all group-hover:bg-[#ffffff] dark:group-hover:bg-[#111111] px-2 rounded-sm text-[#262626] dark:text-[#9D9D9D]",
+              "font-medium  mr-1 transition-all group-hover:bg-[#efffff] dark:group-hover:bg-[#111111] px-2 rounded-sm text-[#262626] dark:text-[#9D9D9D]",
               selected ? "dark:bg-[#111111]" : " bg-[#E3E3E3] dark:bg-[#1D1D1D]"
             )}
           >
