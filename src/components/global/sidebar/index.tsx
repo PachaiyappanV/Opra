@@ -12,7 +12,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 import { NotificationProps, WorkspaceProps } from "@/types/index.type";
-import Image from "next/image";
+
 import { usePathname, useRouter } from "next/navigation";
 import Modal from "../modal";
 import { Menu, PlusCircle } from "lucide-react";
@@ -33,6 +33,8 @@ import { Button } from "@/components/ui/button";
 import InfoBar from "../info-bar";
 import { useDispatch } from "react-redux";
 import { WORKSPACES } from "@/redux/slices/workspaces";
+import Image from "next/image";
+import PaymentButton from "../payment-button";
 
 type Props = {
   activeWorkspaceId: string;
@@ -69,8 +71,8 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
   };
 
   const SidebarSection = (
-    <div className="dark:bg-[#111111] relative flex-none flex flex-col h-full w-[250px] p-4 gap-4 items-center overflow-hidden">
-      <div className="dark:bg-[#111111] p-4 flex gap-2 justify-center items-center mb-4 absolute top-0 left-0 right-0 ">
+    <div className=" bg-[#efffff] dark:bg-[#111111] relative flex-none flex flex-col h-full w-[250px] p-4 gap-4 items-center overflow-hidden">
+      <div className=" bg-[#efffff] dark:bg-[#111111] p-4 flex gap-2 justify-center items-center mb-4 absolute top-0 left-0 right-0 ">
         <Image src="/opal-logo.svg" width={40} height={40} alt="logo" />
         <p className="text-2xl">Opal</p>
       </div>
@@ -82,7 +84,7 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
         <SelectTrigger className="mt-16 dark:text-neutral-400 bg-transparent">
           <SelectValue placeholder="Select a workspace" />
         </SelectTrigger>
-        <SelectContent className="dark:bg-[#111111] backdrop-blur-xl">
+        <SelectContent className=" bg-[#efffff] dark:bg-[#111111] backdrop-blur-xl">
           <SelectGroup>
             <SelectLabel>Workspaces</SelectLabel>
             <Separator />
@@ -195,7 +197,7 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
         <GlobalCard
           title="Upgrade to Pro"
           description=" Unlock AI features like transcription, AI summary, and more."
-          footer={<Button className="bg-[#9D9D9D] ">Upgrade</Button>}
+          footer={<PaymentButton />}
         />
       )}
     </div>
