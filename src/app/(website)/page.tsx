@@ -1,20 +1,12 @@
 import Link from "next/link";
 import LandingPageNavBar from "./_components/navbar";
+import BeamsBackground from "./_components/beams-background";
 
 export default async function LandingPage() {
   return (
     <main className="relative min-h-screen overflow-hidden text-white">
-      {/* Video Background */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover"
-        src="/background-video.mp4" // Replace with the path to your video
-        autoPlay
-        loop
-        muted
-      />
-
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/70"></div>
+      {/* Beams Background */}
+      <BeamsBackground />
 
       {/* Navbar */}
       <div className="absolute top-0 left-0 w-full z-20 p-10">
