@@ -382,26 +382,26 @@ export const inviteMembers = async (
   <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; text-align: center;">
     <div style=" margin: auto; background: #ffffff; border-radius: 16px; box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1); padding: 40px 20px;">
       
-      <!-- Opal Logo -->
-      <img src="https://res.cloudinary.com/dt7mnfm6r/image/upload/v1739801435/vzb4nfdagyzxjj2j3liw.png" alt="Opal Logo" 
+      <!-- Opra Logo -->
+      <img src="https://res.cloudinary.com/dt7mnfm6r/image/upload/v1739801435/vzb4nfdagyzxjj2j3liw.png" alt="Opra Logo" 
         style="width: 80px; margin-bottom: 20px;">
 
       <!-- Heading -->
       <h1 style="color: #333; font-size: 28px; font-weight: bold; margin-bottom: 7px;">You're Invited to Join</h1>
       <h2 style="color: #007bff; font-size: 26px; margin-top: 0; font-weight: 600;">${
         workspace.name
-      } on Opal</h2>
+      } on Opra</h2>
 
       <!-- Invitation Message -->
       <p style="color: #444; font-size: 18px; line-height: 1.6; margin-bottom: 15px;">
         <strong>${senderInfo.firstname} ${
           senderInfo.lastname
         }</strong> has invited you to collaborate in the workspace 
-        <strong>${workspace.name}</strong> on Opal. 
+        <strong>${workspace.name}</strong> on Opra. 
       </p>
 
       <p style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
-        Opal makes team communication smoother with async video messaging. Join now and start collaborating!
+        Opra makes team communication smoother with async video messaging. Join now and start collaborating!
       </p>
 
       <!-- Call to Action Button -->
@@ -420,7 +420,7 @@ export const inviteMembers = async (
       <!-- Footer -->
       <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;">
       <p style="color: #aaa; font-size: 13px;">
-        Opal Team &copy; ${new Date().getFullYear()} | <a href="https://your-opal-website.com" style="color: #007bff; text-decoration: none;">Visit Opal</a>
+        Opra Team &copy; ${new Date().getFullYear()} | <a href="https://your-Opra-website.com" style="color: #007bff; text-decoration: none;">Visit Opra</a>
       </p>
     </div>
   </body>
@@ -548,7 +548,7 @@ export const sendEmailForFirstView = async (videoId: string) => {
           video.title
         }"</strong> in workspace ${
           video.WorkSpace?.name
-        } just received its first view on <strong>Opal</strong>.
+        } just received its first view on <strong>Opra</strong>.
       </p>
 
       
@@ -556,7 +556,7 @@ export const sendEmailForFirstView = async (videoId: string) => {
       <!-- Footer -->
       <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
       <p style="color: #aaa; font-size: 13px;">
-        Opal Team &copy; ${new Date().getFullYear()} | <a href="https://your-opal-website.com" style="color: #007bff; text-decoration: none;">Visit Opal</a>
+        Opra Team &copy; ${new Date().getFullYear()} | <a href="https://your-Opra-website.com" style="color: #007bff; text-decoration: none;">Visit Opra</a>
       </p>
     </div>
   </body>

@@ -73,8 +73,8 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
   const SidebarSection = (
     <div className=" bg-[#efffff] dark:bg-[#111111] relative flex-none flex flex-col h-full w-[250px] p-4 gap-4 items-center overflow-hidden">
       <div className=" bg-[#efffff] dark:bg-[#111111] p-4 flex gap-2 justify-center items-center mb-4 absolute top-0 left-0 right-0 ">
-        <Image src="/opal-logo.svg" width={40} height={40} alt="logo" />
-        <p className="text-2xl">Opal</p>
+        <Image src="/opra-logo.svg" width={40} height={40} alt="logo" />
+        <p className="text-2xl">Opra</p>
       </div>
 
       <Select
