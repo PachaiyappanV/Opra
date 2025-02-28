@@ -4,6 +4,7 @@ import React from "react";
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 
 type Props = {
   type?: "text" | "email" | "password" | "number";
@@ -15,7 +16,8 @@ type Props = {
   name: string;
   errors: FieldErrors<FieldValues>;
   lines?: number;
-  onFocus: () => void;
+  onFocus?: () => void;
+  className?: string;
 };
 
 const FormGenerator = ({
@@ -29,6 +31,7 @@ const FormGenerator = ({
   type,
   lines,
   onFocus,
+  className,
 }: Props) => {
   switch (inputType) {
     case "input":
@@ -93,7 +96,10 @@ const FormGenerator = ({
         <Label className="flex flex-col gap-2" htmlFor={`input-${label}`}>
           {label && label}
           <Textarea
-            className="bg-transparent  resize-none h-auto border-themeGray text-themeTextGray"
+            className={cn(
+              "bg-transparent  resize-none h-auto border-themeGray text-themeTextGray",
+              className
+            )}
             id={`input-${label}`}
             placeholder={placeholder}
             rows={lines}
