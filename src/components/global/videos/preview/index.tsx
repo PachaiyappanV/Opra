@@ -12,6 +12,7 @@ import Activities from "../../activities";
 import { sendEmailForFirstView } from "@/actions/user";
 import { useEffect } from "react";
 import VideoPreviewSkeleton from "./preview-skeleton";
+import EditVideo from "../edit";
 
 type Props = {
   videoId: string;
@@ -21,7 +22,7 @@ const VideoPreview = ({ videoId }: Props) => {
   const router = useRouter();
 
   const { data, isPending } = useQuery({
-    queryKey: ["preview-video", videoId],
+    queryKey: ["preview-video"],
     queryFn: () => getPreviewVideo(videoId),
   });
 
@@ -39,7 +40,7 @@ const VideoPreview = ({ videoId }: Props) => {
     return <VideoPreviewSkeleton />;
   }
 
-  if (!data?.video || data?.status !== 200) {
+  if (data?.status !== 200 || !data?.video) {
     return (
       <div className="flex h-[80vh]  justify-center items-center text-3xl font-bold text-neutral-500">
         Video not found
@@ -61,6 +62,15 @@ const VideoPreview = ({ videoId }: Props) => {
             <h2 className="dark:text-white text-4xl font-bold">
               {data.video.title}
             </h2>
+            {data.author ? (
+              <EditVideo
+                videoId={videoId}
+                title={data.video.title as string}
+                description={data.video.description as string}
+              />
+            ) : (
+              <></>
+            )}
           </div>
           <span className="flex gap-x-3 mt-2">
             <p className="dark:text-[#9D9D9D] capitalize">
