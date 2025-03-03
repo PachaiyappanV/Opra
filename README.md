@@ -1,8 +1,10 @@
-<div style="display:flex; align-items:center; justify-content:center;">
-<div style="display:flex"><img src="https://raw.githubusercontent.com/PachaiyappanV/Opra/refs/heads/main/public/opra-logo.svg"/>
-<h1 style="margin-left:10px;">Opra</h1>
+<div style="display: flex; align-items: center; justify-content: center;">
+  <div style="display: flex; align-items: center; justify-content: center; gap: 10px; ">
+    <img style=" width: 40px; height: 40px;" src="https://raw.githubusercontent.com/PachaiyappanV/Opra/refs/heads/main/public/opra-logo.svg" alt="Opra Logo"/>
+    <p style="font-size: 27px; font-weight: 600;">Opra</p>
+  </div>
 </div>
-</div>
+
 
 ## 🚀 Introduction
 
