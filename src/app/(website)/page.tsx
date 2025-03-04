@@ -26,7 +26,7 @@ export default async function LandingPage() {
           <div className="flex gap-4 sm:justify-center mt-6">
             <Link href="/auth/sign-up">
               {" "}
-              <button className="px-6 py-3 bg-[#7320DD] hover:bg-[#7320DD]/80 text-white font-semibold text-lg rounded-full">
+              <button className="px-6 py-3 bg-[#695bff] hover:bg-[#7320DD]/80 text-white font-semibold text-lg rounded-full">
                 Get Started
               </button>
             </Link>
