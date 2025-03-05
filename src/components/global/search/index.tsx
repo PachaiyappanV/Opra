@@ -66,9 +66,7 @@ const UserSearch = ({ workspaceId }: Props) => {
                   variant={"default"}
                   className="w-5/12 font-bold"
                 >
-                  <Loader state={isPending} color="#000">
-                    Invite
-                  </Loader>
+                  <Loader state={isPending}>Invite</Loader>
                 </Button>
               </div>
             </div>

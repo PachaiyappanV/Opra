@@ -41,9 +41,7 @@ const EditVideoForm = ({ description, title, videoId }: Props) => {
         className="rounded-md border border-input focus-visible:ring-1 focus-visible:ring-ring"
       />
       <Button>
-        <Loader state={isPending} color="#000">
-          Update
-        </Loader>
+        <Loader state={isPending}>Update</Loader>
       </Button>
     </form>
   );

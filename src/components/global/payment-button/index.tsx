@@ -8,9 +8,7 @@ const PaymentButton = () => {
 
   return (
     <Button className="text-sm w-full " onClick={onSubscribe}>
-      <Loader color="#000" state={isProcessing}>
-        Upgrade
-      </Loader>
+      <Loader state={isProcessing}>Upgrade</Loader>
     </Button>
   );
 };

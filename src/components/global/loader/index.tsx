@@ -5,14 +5,13 @@ import { cn } from "@/lib/utils";
 type Props = {
   state: boolean;
   className?: string;
-  color?: string;
   children?: React.ReactNode;
 };
 
-const Loader = ({ state, className, color, children }: Props) => {
+const Loader = ({ state, className, children }: Props) => {
   return state ? (
     <div className={cn(className)}>
-      <Spinner color={color} />
+      <Spinner />
     </div>
   ) : (
     children

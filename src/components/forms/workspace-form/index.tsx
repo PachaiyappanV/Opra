@@ -32,11 +32,10 @@ const WorkspaceForm = () => {
       <Button
         type="submit"
         disabled={isPending}
-        className="text-sm w-full mt-2"
+        className="text-sm mt-2 bg-transparent w-full  text-[#707070] "
+        variant="outline"
       >
-        <Loader state={isPending} color="#111111">
-          Create Workspace
-        </Loader>
+        <Loader state={isPending}>Create Workspace</Loader>
       </Button>
     </form>
   );
