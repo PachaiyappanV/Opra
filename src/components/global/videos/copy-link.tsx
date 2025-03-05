@@ -1,5 +1,5 @@
-import { Links } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { Link2 } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
 
@@ -28,7 +28,7 @@ const CopyLink = ({ videoId, className, variant }: Props) => {
 
   return (
     <Button variant={variant} onClick={onCopyClipboard} className={className}>
-      <Links />
+      <Link2 />
     </Button>
   );
 };
