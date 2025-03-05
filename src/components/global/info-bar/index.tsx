@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { UserButton } from "@clerk/nextjs";
 import { Search } from "lucide-react";
 import React from "react";
+import UserId from "../user-id";
 
 const InfoBar = () => {
   return (
@@ -23,6 +24,7 @@ const InfoBar = () => {
           <VideoRecorderDuotone />
           <span className="flex items-center gap-2">Record</span>
         </Button>
+        <UserId />
         <UserButton />
       </div>
     </header>
