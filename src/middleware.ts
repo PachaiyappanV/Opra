@@ -1,11 +1,10 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-const allowedOrigins = ["http://localhost:5173", "http://localhost:3000"];
-
 const corsOptions = {
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Access-Control-Allow-Origin": "*", // Allow all origins
 };
 
 const isProtectedRoute = createRouteMatcher(["/dashboard(.*)", "/payment(.*)"]);
@@ -13,15 +12,10 @@ const isHomeRoute = createRouteMatcher(["/"]);
 
 export default clerkMiddleware(async (auth, req) => {
   const origin = req.headers.get("origin") ?? "";
-  const isAllowedOrigin = allowedOrigins.includes(origin);
 
-  // Handle preflight requests
+  // Handle preflight requests (CORS)
   if (req.method === "OPTIONS") {
-    const preflightHeaders = {
-      ...(isAllowedOrigin && { "Access-Control-Allow-Origin": origin }),
-      ...corsOptions,
-    };
-    return NextResponse.json({}, { headers: preflightHeaders });
+    return NextResponse.json({}, { headers: corsOptions });
   }
 
   // Handle protected routes
@@ -35,13 +29,10 @@ export default clerkMiddleware(async (auth, req) => {
     return NextResponse.redirect(new URL("/auth/sign-in", req.url));
   }
 
-  // Handle simple requests
+  // Handle normal requests
   const response = NextResponse.next();
 
-  if (isAllowedOrigin) {
-    response.headers.set("Access-Control-Allow-Origin", origin);
-  }
-
+  // Apply CORS headers
   Object.entries(corsOptions).forEach(([key, value]) => {
     response.headers.set(key, value);
   });
@@ -51,9 +42,7 @@ export default clerkMiddleware(async (auth, req) => {
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
     "/(api|trpc)(.*)",
   ],
 };
