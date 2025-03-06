@@ -23,41 +23,9 @@ export async function GET(
         },
       },
     });
-    if (userProfile)
+    if (userProfile) {
       return NextResponse.json({ status: 200, user: userProfile });
-
-    const clerkUserInstance = await clerkClient();
-    const clerkUser = await clerkUserInstance.users.getUser(id);
-
-    const createUser = await client.user.create({
-      data: {
-        clerkid: id,
-        email: clerkUser.emailAddresses[0].emailAddress,
-        firstname: clerkUser.firstName,
-        lastname: clerkUser.lastName,
-        studio: {
-          create: {},
-        },
-        workspace: {
-          create: {
-            name: `${clerkUser.firstName}'s Workspace`,
-            type: "PERSONAL",
-          },
-        },
-        subscription: {
-          create: {},
-        },
-      },
-      include: {
-        subscription: {
-          select: {
-            plan: true,
-          },
-        },
-      },
-    });
-
-    if (createUser) return NextResponse.json({ status: 201, user: createUser });
+    }
 
     return NextResponse.json({ status: 400 });
   } catch (error) {
