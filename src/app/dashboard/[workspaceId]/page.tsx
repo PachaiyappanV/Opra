@@ -1,4 +1,8 @@
-import { getVideos, getWorkspaceFolders } from "@/actions/workspace";
+import {
+  getVideos,
+  getWorkspaceFolders,
+  getWorkspaceInfo,
+} from "@/actions/workspace";
 import CreateFolders from "@/components/global/create-folder";
 import CreateWorkspace from "@/components/global/create-workspace";
 import Folders from "@/components/global/folders";
@@ -22,6 +26,11 @@ const WorkspacePage = async ({ params }: Props) => {
   await query.prefetchQuery({
     queryKey: ["workspace-videos"],
     queryFn: () => getVideos(workspaceId),
+  });
+
+  await query.prefetchQuery({
+    queryKey: ["workspace-info"],
+    queryFn: () => getWorkspaceInfo(workspaceId),
   });
 
   return (
