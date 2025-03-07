@@ -155,6 +155,31 @@ export const getWorkspaces = async () => {
   }
 };
 
+export const getWorkspaceInfo = async (workSpaceId: string) => {
+  try {
+    const workspace = await client.workSpace.findUnique({
+      where: {
+        id: workSpaceId,
+      },
+      select: {
+        id: true,
+        name: true,
+        type: true,
+        _count: {
+          select: {
+            videos: true,
+            folders: true,
+          },
+        },
+      },
+    });
+    if (workspace) return { status: 200, workspace };
+    return { status: 404 };
+  } catch (error) {
+    return { status: 500 };
+  }
+};
+
 export const createWorkspace = async (name: string) => {
   try {
     const loggedUser = await currentUser();
