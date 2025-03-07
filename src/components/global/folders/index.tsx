@@ -2,7 +2,7 @@
 import FolderDuotone from "@/components/icons/folder-duotone";
 
 import Folder from "./folder";
-import { getWorkspaceFolders } from "@/actions/workspace";
+import { getWorkspaceFolders, getWorkspaceInfo } from "@/actions/workspace";
 import { useMutationDataState } from "@/hooks/use-mutation-data";
 import { useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
@@ -21,6 +21,11 @@ const Folders = ({ workspaceId }: Props) => {
     queryFn: () => getWorkspaceFolders(workspaceId),
   });
 
+  const { data: workspaceInfo } = useQuery({
+    queryKey: ["workspace-info"],
+    queryFn: () => getWorkspaceInfo(workspaceId),
+  });
+
   if (isFetched && data?.folders) {
     dispatch(FOLDERS({ folders: data.folders }));
   }
@@ -30,9 +35,17 @@ const Folders = ({ workspaceId }: Props) => {
   return (
     <div className="flex flex-col gap-4" suppressHydrationWarning>
       <div className="flex items-center  justify-between">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <FolderDuotone />
-          <h2 className="dark:text-[#BDBDBD] text-xl"> Folders</h2>
+          <h2 className="dark:text-[#BDBDBD] text-xl flex gap-1 ">
+            Folders
+            {workspaceInfo?.workspace &&
+              workspaceInfo.workspace?._count.folders > 0 && (
+                <p className="text-[11px] mt-2 rounded-[5px] bg-neutral-500 h-[15px] w-[15px] flex items-center justify-center text-white ">
+                  {workspaceInfo.workspace?._count.folders}
+                </p>
+              )}
+          </h2>
         </div>
       </div>
       <div className="flex flex-wrap gap-4 w-full">
@@ -69,6 +82,7 @@ const Folders = ({ workspaceId }: Props) => {
         workspaceId={workspaceId}
         folderId={workspaceId}
         videosKey="workspace-videos"
+        videosCount={workspaceInfo?.workspace?._count.videos}
       />
     </div>
   );
