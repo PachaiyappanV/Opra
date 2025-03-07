@@ -2,13 +2,17 @@ import VideoRecorderDuotone from "@/components/icons/video-recorder-duotone";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UserButton } from "@clerk/nextjs";
-import { Search } from "lucide-react";
+import { Download, Search } from "lucide-react";
 import React from "react";
 import UserId from "../user-id";
+import { ToolTip } from "../tooltip";
 
-const InfoBar = () => {
+type Props = {
+  workspaceType?: "PERSONAL" | "PUBLIC";
+};
+const InfoBar = ({ workspaceType }: Props) => {
   return (
-    <header className="pl-20 md:pl-[265px] backdrop-blur-3xl fixed p-4 w-full flex items-center justify-between gap-4">
+    <header className="pl-20 z-40  md:pl-[265px] backdrop-blur-3xl fixed p-4 w-full flex items-center justify-between gap-4">
       <div className="flex gap-4 justify-center items-center border-2 rounded-full px-4 w-full max-w-lg">
         <Search size={25} className="text-[#707070]" />
         <Input
@@ -17,14 +21,35 @@ const InfoBar = () => {
         />
       </div>
       <div className="flex items-center gap-4">
-        <Button
-          variant="outline"
-          className="bg-transparent text-[#707070] flex items-center gap-2"
-        >
-          <VideoRecorderDuotone />
-          <span className="flex items-center gap-2">Record</span>
-        </Button>
-        <UserId />
+        {workspaceType === "PERSONAL" && (
+          <div className="flex items-center gap-4">
+            <ToolTip content="Download Screen Recorder for Windows" side="left">
+              <a
+                href="https://github.com/PachaiyappanV/Opra-Screen-Recorder/releases/download/v0.0.1/opra.Setup.0.0.0.exe"
+                download
+              >
+                <Button
+                  variant="outline"
+                  className="bg-transparent text-[#707070]"
+                >
+                  <Download size={15} />
+                </Button>
+              </a>
+            </ToolTip>
+            <a href="opra://open">
+              <Button
+                variant="outline"
+                className="bg-transparent text-[#707070] flex items-center gap-2"
+              >
+                <VideoRecorderDuotone />
+                <span className="flex items-center gap-2">Record</span>
+              </Button>
+            </a>
+
+            <UserId />
+          </div>
+        )}
+
         <UserButton />
       </div>
     </header>
