@@ -21,7 +21,7 @@ const GlobalHeader = ({ workspace }: Props) => {
           ? pathName.charAt(1).toUpperCase() + pathName.slice(2).toLowerCase()
           : pathName.includes("video")
           ? ""
-          : `${workspace.type === "PERSONAL" ? "My library" : workspace.name}`}
+          : `${workspace.type === "PERSONAL" ? "My Library" : workspace.name}`}
       </h1>
     </article>
   );

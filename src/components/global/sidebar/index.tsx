@@ -71,7 +71,7 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
   };
 
   const SidebarSection = (
-    <div className=" bg-[#f7f7f8] dark:bg-[#111111] relative flex-none flex flex-col h-full w-[250px] p-4 gap-4 items-center overflow-hidden">
+    <div className=" bg-[#f7f7f8] dark:bg-[#111111] relative z-50 flex-none flex flex-col h-full w-[250px] p-4 gap-4 items-center overflow-hidden">
       <div className=" bg-[#f7f7f8] dark:bg-[#111111] p-4 flex gap-2 justify-center items-center mb-4 absolute top-0 left-0 right-0 ">
         <Image src="/opra-logo.svg" width={40} height={40} alt="logo" />
         <p className="text-2xl">Opra</p>
@@ -205,7 +205,7 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
 
   return (
     <div className="">
-      <InfoBar />
+      <InfoBar workspaceType={currentWorkspace?.type} />
       <div className="fixed top-[21px] left-6  cursor-pointer lg:hidden ">
         <div className=" hover:bg-[#111111] px-[3px] py-[0.8px] rounded-[3px]">
           <Sheet>

@@ -81,10 +81,7 @@ const VideoPreview = ({ videoId }: Props) => {
             </p>
           </span>
         </div>
-        <video
-          className="w-full aspect-video dark:opacity-70 rounded-xl"
-          controls
-        >
+        <video className="w-full aspect-video rounded-xl" controls>
           <source
             src={`${process.env.NEXT_PUBLIC_CLOUD_FRONT_STREAM_URL}/${data.video.source}#1`}
             type="video/mp4"
@@ -92,9 +89,9 @@ const VideoPreview = ({ videoId }: Props) => {
         </video>
         <div className="flex flex-col text-2xl gap-y-4">
           <div className="flex gap-x-5 items-center justify-between">
-            <p className="dark:text-[#BDBDBD] text-semibold">Description</p>
+            <p className="dark:text-[#BDBDBD] text-bold">Description</p>
           </div>
-          <p className="text-[#707070] text-lg text-medium">
+          <p className="text-[#606060] text-lg text-medium">
             {data.video.description}
           </p>
         </div>

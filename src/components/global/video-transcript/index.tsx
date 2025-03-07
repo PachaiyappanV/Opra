@@ -11,7 +11,7 @@ const VideoTranscript = ({ transcript }: Props) => {
       value="Transcript"
       className="rounded-xl flex flex-col gap-y-6 "
     >
-      <p className="text-[#a7a7a7]">{transcript}</p>
+      <p className="text-[#606060]">{transcript}</p>
     </TabsContent>
   );
 };

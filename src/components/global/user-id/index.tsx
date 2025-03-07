@@ -20,10 +20,10 @@ const UserId = () => {
   return (
     <Button
       variant="outline"
-      className="bg-transparent text-[#707070] flex items-center gap-2"
+      className="bg-transparent cursor-default text-[#707070] flex items-center gap-2"
     >
-      <span className="flex items-center gap-2">user_id</span>
-      <span onClick={handleCopy}>
+      <span className="flex items-center gap-2">User ID</span>
+      <span onClick={handleCopy} className="cursor-pointer">
         {copied ? <Check size={15} /> : <Copy size={15} />}
       </span>
     </Button>

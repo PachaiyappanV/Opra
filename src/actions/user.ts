@@ -420,7 +420,7 @@ export const inviteMembers = async (
       <!-- Footer -->
       <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;">
       <p style="color: #aaa; font-size: 13px;">
-        Opra Team &copy; ${new Date().getFullYear()} | <a href="https://your-Opra-website.com" style="color: #007bff; text-decoration: none;">Visit Opra</a>
+        Opra Team &copy; ${new Date().getFullYear()} | <a href="https://opra-six.vercel.app" style="color: #007bff; text-decoration: none;">Visit Opra</a>
       </p>
     </div>
   </body>
@@ -556,7 +556,7 @@ export const sendEmailForFirstView = async (videoId: string) => {
       <!-- Footer -->
       <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
       <p style="color: #aaa; font-size: 13px;">
-        Opra Team &copy; ${new Date().getFullYear()} | <a href="https://your-Opra-website.com" style="color: #007bff; text-decoration: none;">Visit Opra</a>
+        Opra Team &copy; ${new Date().getFullYear()} | <a href="https://opra-six.vercel.app" style="color: #007bff; text-decoration: none;">Visit Opra</a>
       </p>
     </div>
   </body>
