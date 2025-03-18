@@ -29,7 +29,7 @@ const Videos = ({ folderId, videosKey, workspaceId, videosCount }: Props) => {
           <VideoRecorderDuotone />
           <h2 className="dark:text-[#BdBdBd] text-xl flex  gap-1">
             Videos
-            {videosCount && videosCount > 0 && (
+            {videosCount! > 0 && (
               <p className="text-[11px] mt-2 rounded-[5px] bg-neutral-500 h-[15px] w-[15px] flex items-center justify-center text-white ">
                 {videosCount}
               </p>
