@@ -93,6 +93,7 @@ export const getVideos = async (id: string) => {
             firstname: true,
             lastname: true,
             image: true,
+            clerkid: true,
           },
         },
       },

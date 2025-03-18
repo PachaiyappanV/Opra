@@ -8,12 +8,14 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dot, Share2, User } from "lucide-react";
 import { truncateString } from "@/lib/utils";
+import { useUser } from "@clerk/nextjs";
 
 type Props = {
   User: {
     firstname: string | null;
     lastname: string | null;
     image: string | null;
+    clerkid: string;
   } | null;
   id: string;
   Folder: {
@@ -32,6 +34,8 @@ const VideoCard = (props: Props) => {
     (new Date().getTime() - props.createdAt.getTime()) / (24 * 60 * 60 * 1000)
   );
 
+  const { user } = useUser();
+
   return (
     <Loader
       className="bg-[#171717] flex justify-center items-center border-[1px] border-[rgb(37,37,37)] rounded-xl"
@@ -39,13 +43,15 @@ const VideoCard = (props: Props) => {
     >
       <div className="group overflow-hidden cursor-pointer bg-white dark:bg-[#171717] relative border border-neutral-300 dark:border-[#252525] rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
         {/* Action Menu - Now has a background overlay */}
-        <div className="absolute top-3 right-3 z-30 gap-x-3 hidden group-hover:flex bg-white/80 dark:bg-[#252525]/80 backdrop-blur-md px-2 py-1 rounded-sm shadow-md">
-          <CardMenu
-            currentFolderName={props.Folder?.name}
-            videoId={props.id}
-            currentWorkspace={props.workspaceId}
-            currentFolder={props.Folder?.id}
-          />
+        <div className="absolute top-3 right-3 z-30 gap-x-3 hidden group-hover:flex bg-white/80 dark:bg-[#252525]/80 backdrop-blur-md px-2  py-1 rounded-sm shadow-md">
+          {props.User?.clerkid === user?.id && (
+            <CardMenu
+              currentFolderName={props.Folder?.name}
+              videoId={props.id}
+              currentWorkspace={props.workspaceId}
+              currentFolder={props.Folder?.id}
+            />
+          )}
           <CopyLink className="p-[5px] h-5" videoId={props.id} />
         </div>
 
