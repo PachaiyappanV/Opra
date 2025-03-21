@@ -6,7 +6,7 @@ import CardMenu from "./video-card-menu";
 import CopyLink from "./copy-link";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Dot, Share2, User } from "lucide-react";
+import { Dot, Eye, MessageSquare, User } from "lucide-react";
 import { truncateString } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 
@@ -27,6 +27,10 @@ type Props = {
   source: string;
   processing: boolean;
   workspaceId: string;
+  views: number;
+  _count: {
+    Comment: number;
+  };
 };
 
 const VideoCard = (props: Props) => {
@@ -73,37 +77,38 @@ const VideoCard = (props: Props) => {
 
           {/* Video Info */}
           <div className="px-4 py-3 flex flex-col gap-2">
+            {/* User Info */}
+            <div className="flex gap-x-1 items-center mt-2">
+              <Avatar className="w-8 h-8 mr-1">
+                <AvatarImage src={props.User?.image as string} />
+                <AvatarFallback>
+                  <User />
+                </AvatarFallback>
+              </Avatar>
+
+              <p className="text-xs font-bold text-neutral-600 dark:text-neutral-400 capitalize">
+                {props.User?.firstname} {props.User?.lastname}
+              </p>
+              <p className="text-xs text-neutral-700 dark:text-neutral-500 flex items-center">
+                <Dot className="w-3 text-sm" />
+
+                {daysAgo === 0 ? "Today" : `${daysAgo}d ago`}
+              </p>
+            </div>
             <h2 className="text-sm font-semibold text-neutral-900 dark:text-neutral-300">
               {props.title && props.title.length > 50
                 ? `${truncateString(props.title as string, 50)}`
                 : props.title}
             </h2>
 
-            {/* User Info */}
-            <div className="flex gap-x-2 items-center mt-2">
-              <Avatar className="w-8 h-8">
-                <AvatarImage src={props.User?.image as string} />
-                <AvatarFallback>
-                  <User />
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="text-xs text-neutral-600 dark:text-neutral-400 capitalize">
-                  {props.User?.firstname} {props.User?.lastname}
-                </p>
-                <p className="text-xs text-neutral-700 dark:text-neutral-500 flex items-center">
-                  <Dot /> {daysAgo === 0 ? "Today" : `${daysAgo}d ago`}
-                </p>
-              </div>
-            </div>
-
             {/* Workspace Info */}
-            <div className="mt-2 flex gap-x-1 items-center text-xs text-neutral-500 dark:text-neutral-400">
-              <Share2
-                size={12}
-                className="text-neutral-400 dark:text-neutral-500"
-              />
-              <p>{props.User?.firstname}'s Workspace</p>
+            <div className="mt-2 flex gap-x-4 items-center text-xs text-neutral-500 dark:text-neutral-400">
+              <p className="flex items-center gap-x-1">
+                <Eye className="w-4 h-4" /> {props.views}
+              </p>
+              <p className="flex items-center gap-x-1">
+                <MessageSquare className="w-4 h-4" /> {props._count.Comment}
+              </p>
             </div>
           </div>
         </Link>
