@@ -82,6 +82,8 @@ export const getVideos = async (id: string) => {
         createdAt: true,
         source: true,
         processing: true,
+        views: true,
+
         Folder: {
           select: {
             id: true,
@@ -94,6 +96,11 @@ export const getVideos = async (id: string) => {
             lastname: true,
             image: true,
             clerkid: true,
+          },
+        },
+        _count: {
+          select: {
+            Comment: true,
           },
         },
       },
