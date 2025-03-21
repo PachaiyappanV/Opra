@@ -104,10 +104,7 @@ const ChangeVideoLocation = ({
           </Label>
         )}
       </div>
-      <Button
-        variant="outline"
-        className="bg-[#E0E0E0]  dark:bg-[#1D1D1D] text-[#707070]"
-      >
+      <Button variant="outline" className="bg-transparent text-[#707070] ">
         <Loader state={isPending}>Move</Loader>
       </Button>
     </form>

@@ -112,12 +112,12 @@ const Sidebar = ({ activeWorkspaceId }: Props) => {
             title="Invite To Workspace"
             description="Invite other users to your workspace"
             trigger={
-              <span className="text-sm cursor-pointer flex items-center justify-center bg-neutral-800/90  hover:bg-neutral-800/60 w-full rounded-sm p-[5px] gap-2">
+              <span className="text-sm cursor-pointer flex items-center justify-center bg-[#E0E0E0] dark:bg-neutral-800/90  dark:hover:bg-neutral-800/60 w-full rounded-sm p-[5px] gap-2 hover:bg-[#D0D0D0] hover:text-[#262626]">
                 <PlusCircle
                   size={15}
                   className="text-neutral-800/90 fill-neutral-500"
                 />
-                <span className="text-neutral-400 font-semibold text-xs">
+                <span className="dark:text-neutral-400 text-neutral-500 font-semibold text-xs">
                   Invite To Workspace
                 </span>
               </span>
