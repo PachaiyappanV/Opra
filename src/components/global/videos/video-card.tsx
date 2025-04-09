@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Loader from "../loader";
 import CardMenu from "./video-card-menu";
 
@@ -37,8 +37,8 @@ const VideoCard = (props: Props) => {
   const daysAgo = Math.floor(
     (new Date().getTime() - props.createdAt.getTime()) / (24 * 60 * 60 * 1000)
   );
-
   const { user } = useUser();
+  const [showMenuCard, setShowMenuCard] = useState(false);
 
   return (
     <Loader
@@ -55,9 +55,17 @@ const VideoCard = (props: Props) => {
               videoId={props.id}
               currentWorkspace={props.workspaceId}
               currentFolder={props.Folder?.id}
+              setshowMenuCard={setShowMenuCard}
             />
           )}
         </div>
+        {showMenuCard && (
+          <div className="absolute p-[10px] top-28 right-3 z-30 gap-y-2 flex   flex-col  rounded-2xl w-[60%] bg-neutral-100 shadow-md  dark:bg-black ">
+            <p className="text-sm text-black dark:text-white p-2 dark:hover:bg-[#101010] hover:bg-neutral-200  rounded-lg ">
+              Delete
+            </p>
+          </div>
+        )}
 
         {/* Video & Content Wrapper */}
         <Link

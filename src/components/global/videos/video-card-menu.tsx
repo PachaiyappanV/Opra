@@ -9,6 +9,7 @@ type Props = {
   currentWorkspace?: string;
   currentFolder?: string;
   currentFolderName?: string;
+  setshowMenuCard: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const CardMenu = ({
@@ -16,6 +17,7 @@ const CardMenu = ({
   currentFolder,
   currentFolderName,
   currentWorkspace,
+  setshowMenuCard,
 }: Props) => {
   return (
     <div className="flex flex-col items-center gap-y-2">
@@ -45,7 +47,10 @@ const CardMenu = ({
         side="left"
         contentClassName="bg-white dark:bg-black py-[2px] px-[6px] rounded-[7px] shadow-md text-md dark:text-white text-black font-bold"
       >
-        <div className=" bg-white dark:bg-black px-[1px] rounded-[7px] shadow-md ">
+        <div
+          onClick={() => setshowMenuCard((prev) => !prev)}
+          className=" bg-white dark:bg-black px-[1px] rounded-[7px] shadow-md "
+        >
           <Ellipsis size={25} className="dark:text-white" />
         </div>
       </ToolTip>
