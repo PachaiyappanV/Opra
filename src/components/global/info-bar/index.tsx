@@ -23,7 +23,11 @@ const InfoBar = ({ workspaceType }: Props) => {
       <div className="flex items-center gap-4">
         {workspaceType === "PERSONAL" && (
           <div className="flex items-center gap-4">
-            <ToolTip content="Download Screen Recorder for Windows" side="left">
+            <ToolTip
+              content="Download Screen Recorder for Windows"
+              side="left"
+              contentClassName="p-2 text-sm rounded-sm border bg-transparent text-neutral-950 dark:text-neutral-300"
+            >
               <a
                 href="https://github.com/PachaiyappanV/Opra-Screen-Recorder/releases/download/v0.0.1/opra.Setup.0.0.0.exe"
                 download
