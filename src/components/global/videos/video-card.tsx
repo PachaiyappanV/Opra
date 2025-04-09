@@ -47,7 +47,8 @@ const VideoCard = (props: Props) => {
     >
       <div className="group overflow-hidden cursor-pointer bg-white dark:bg-[#171717] relative border border-neutral-300 dark:border-[#252525] rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
         {/* Action Menu - Now has a background overlay */}
-        <div className="absolute top-3 right-3 z-30 gap-y-3 hidden group-hover:flex flex-col items-center ">
+        <div className="absolute top-3 right-3 z-30 gap-y-2 hidden group-hover:flex flex-col items-center ">
+          <CopyLink videoId={props.id} />
           {props.User?.clerkid === user?.id && (
             <CardMenu
               currentFolderName={props.Folder?.name}
@@ -56,7 +57,6 @@ const VideoCard = (props: Props) => {
               currentFolder={props.Folder?.id}
             />
           )}
-          <CopyLink className="p-[5px] h-5" videoId={props.id} />
         </div>
 
         {/* Video & Content Wrapper */}
