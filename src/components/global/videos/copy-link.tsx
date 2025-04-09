@@ -5,18 +5,9 @@ import { toast } from "sonner";
 
 type Props = {
   videoId: string;
-  className?: string;
-  variant?:
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost"
-    | "link"
-    | null;
 };
 
-const CopyLink = ({ videoId, className, variant }: Props) => {
+const CopyLink = ({ videoId }: Props) => {
   const onCopyClipboard = () => {
     navigator.clipboard.writeText(
       `${process.env.NEXT_PUBLIC_HOST_URL}/preview/${videoId}`
@@ -27,9 +18,13 @@ const CopyLink = ({ videoId, className, variant }: Props) => {
   };
 
   return (
-    <Button variant={variant} onClick={onCopyClipboard} className={className}>
-      <Link2 />
-    </Button>
+    <div className=" bg-white/80 dark:bg-[#252525]/80 py-[1px] px-[2px]  rounded-[7px] shadow-md">
+      <Link2
+        onClick={onCopyClipboard}
+        size={23}
+        className="dark:text-[#b4b3b3]"
+      />
+    </div>
   );
 };
 
