@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { Link2 } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
+import { ToolTip } from "../tooltip";
 
 type Props = {
   videoId: string;
@@ -18,13 +18,19 @@ const CopyLink = ({ videoId }: Props) => {
   };
 
   return (
-    <div className=" bg-white/80 dark:bg-[#252525]/80 py-[1px] px-[2px]  rounded-[7px] shadow-md">
-      <Link2
-        onClick={onCopyClipboard}
-        size={23}
-        className="dark:text-[#b4b3b3]"
-      />
-    </div>
+    <ToolTip
+      content="Copy link"
+      side="left"
+      contentClassName="bg-white dark:bg-black py-[2px] px-[6px] rounded-[7px] shadow-md text-md dark:text-white text-black font-bold"
+    >
+      <div className=" bg-white dark:bg-black py-[1px] px-[2px]  rounded-[7px] shadow-md">
+        <Link2
+          onClick={onCopyClipboard}
+          size={23}
+          className="dark:text-white"
+        />
+      </div>
+    </ToolTip>
   );
 };
 
