@@ -47,7 +47,7 @@ const VideoCard = (props: Props) => {
     >
       <div className="group overflow-hidden cursor-pointer bg-white dark:bg-[#171717] relative border border-neutral-300 dark:border-[#252525] rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
         {/* Action Menu - Now has a background overlay */}
-        <div className="absolute top-3 right-3 z-30 gap-x-3 hidden group-hover:flex bg-white/80 dark:bg-[#252525]/80 backdrop-blur-md px-2  py-1 rounded-sm shadow-md">
+        <div className="absolute top-3 right-3 z-30 gap-y-3 hidden group-hover:flex flex-col items-center ">
           {props.User?.clerkid === user?.id && (
             <CardMenu
               currentFolderName={props.Folder?.name}
