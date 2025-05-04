@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Loader from "../loader";
 import CardMenu from "./video-card-menu";
 
@@ -39,13 +39,34 @@ const VideoCard = (props: Props) => {
   );
   const { user } = useUser();
   const [showMenuCard, setShowMenuCard] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  let timerId: NodeJS.Timeout;
+
+  const handleMouseEnter = () => {
+    if (videoRef.current) {
+      timerId = setTimeout(() => {
+        videoRef?.current?.play();
+      }, 1000);
+    }
+  };
+  const handleMouseLeave = () => {
+    clearTimeout(timerId);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  };
 
   return (
     <Loader
       className="bg-[#171717] flex justify-center items-center border-[1px] border-[rgb(37,37,37)] rounded-xl"
       state={props.processing}
     >
-      <div className="group overflow-hidden cursor-pointer bg-white dark:bg-[#171717] relative border border-neutral-300 dark:border-[#252525] rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+      <div
+        onMouseEnter={() => handleMouseEnter()}
+        onMouseLeave={() => handleMouseLeave()}
+        className="group overflow-hidden cursor-pointer bg-white dark:bg-[#171717] relative border border-neutral-300 dark:border-[#252525] rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+      >
         {/* Action Menu - Now has a background overlay */}
         <div className="absolute top-3 right-3 z-30 gap-y-2 hidden group-hover:flex flex-col items-center ">
           <CopyLink videoId={props.id} />
@@ -74,6 +95,8 @@ const VideoCard = (props: Props) => {
         >
           {/* Video Preview */}
           <video
+            muted
+            ref={videoRef}
             controls={false}
             preload="metadata"
             className="w-full aspect-video opacity-80 dark:opacity-60 transition-opacity duration-200"
