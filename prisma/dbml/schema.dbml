@@ -1,0 +1,173 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id String [pk]
+  email String [unique, not null]
+  firstname String
+  lastname String
+  createdAt DateTime [default: `now()`, not null]
+  clerkid String [unique, not null]
+  studio Media
+  image String
+  workspace WorkSpace [not null]
+  videos Video [not null]
+  subscription Subscription
+  members Member [not null]
+  notification Notification [not null]
+  sender Invite [not null]
+  reciever Invite [not null]
+  trial Boolean [not null, default: false]
+  firstView Boolean [not null, default: false]
+  comment Comment [not null]
+}
+
+Table Comment {
+  id String [pk]
+  comment String [not null]
+  reply Comment [not null]
+  Comment Comment
+  commentId String
+  User User
+  userId String
+  Video Video
+  videoId String
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Table Subscription {
+  id String [pk]
+  User User
+  userId String [unique]
+  createdAt DateTime [default: `now()`, not null]
+  plan SUBSCRIPTION_PLAN [not null, default: 'FREE']
+  updatedAt DateTime [default: `now()`, not null]
+  customerId String [unique]
+}
+
+Table Media {
+  id String [pk]
+  screen String
+  mic String
+  camera String
+  preset PRESET [not null, default: 'SD']
+  User User
+  userId String [unique]
+}
+
+Table WorkSpace {
+  id String [pk]
+  type Type [not null]
+  name String [not null]
+  User User
+  userId String
+  createdAt DateTime [default: `now()`, not null]
+  folders Folder [not null]
+  videos Video [not null]
+  members Member [not null]
+  invite Invite [not null]
+}
+
+Table Folder {
+  id String [pk]
+  name String [not null, default: 'Untitled Folder']
+  createdAt DateTime [default: `now()`, not null]
+  WorkSpace WorkSpace
+  workSpaceId String
+  videos Video [not null]
+}
+
+Table Video {
+  id String [pk]
+  title String [default: 'Untilted Video']
+  description String [default: 'No Description']
+  source String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  Folder Folder
+  folderId String
+  User User
+  userId String
+  processing Boolean [not null, default: true]
+  WorkSpace WorkSpace
+  workSpaceId String
+  views Int [not null, default: 0]
+  summery String
+  Comment Comment [not null]
+}
+
+Table Member {
+  id String [pk]
+  User User
+  userId String
+  createdAt DateTime [default: `now()`, not null]
+  member Boolean [not null, default: true]
+  WorkSpace WorkSpace
+  workSpaceId String
+}
+
+Table Notification {
+  id String [pk]
+  User User
+  userId String
+  content String [not null]
+}
+
+Table Invite {
+  id String [pk]
+  sender User
+  senderId String
+  reciever User
+  recieverId String
+  content String [not null]
+  WorkSpace WorkSpace
+  workSpaceId String
+  accepted Boolean [not null, default: false]
+}
+
+Enum Type {
+  PERSONAL
+  PUBLIC
+}
+
+Enum PRESET {
+  HD
+  SD
+}
+
+Enum SUBSCRIPTION_PLAN {
+  PRO
+  FREE
+}
+
+Ref: Comment.commentId > Comment.id
+
+Ref: Comment.userId > User.id [delete: Cascade]
+
+Ref: Comment.videoId > Video.id [delete: Cascade]
+
+Ref: Subscription.userId - User.id
+
+Ref: Media.userId - User.id
+
+Ref: WorkSpace.userId > User.id
+
+Ref: Folder.workSpaceId > WorkSpace.id
+
+Ref: Video.folderId > Folder.id [delete: Cascade]
+
+Ref: Video.userId > User.id [delete: Cascade]
+
+Ref: Video.workSpaceId > WorkSpace.id [delete: Cascade]
+
+Ref: Member.userId > User.id
+
+Ref: Member.workSpaceId > WorkSpace.id
+
+Ref: Notification.userId > User.id
+
+Ref: Invite.senderId > User.id
+
+Ref: Invite.recieverId > User.id
+
+Ref: Invite.workSpaceId > WorkSpace.id
