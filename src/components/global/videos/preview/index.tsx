@@ -81,7 +81,11 @@ const VideoPreview = ({ videoId }: Props) => {
             </p>
           </span>
         </div>
-        <video className="w-full aspect-video rounded-xl" controls>
+        <video
+          className="w-full aspect-video rounded-xl"
+          preload="metadata"
+          controls
+        >
           <source
             src={`${process.env.NEXT_PUBLIC_CLOUD_FRONT_STREAM_URL}/${data.video.source}#1`}
             type="video/mp4"
